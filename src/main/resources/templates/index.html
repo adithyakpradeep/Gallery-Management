@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Artelier</title>
+	<style>
+		/* Styling remains unchanged */
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+    body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    color: #333;
+    overflow-x: hidden;
+    
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Distribute items evenly */
+    padding: 20px 80px; /* Adjust navbar padding */
+    width: 100vw; /* Fixed width to avoid horizontal scroll */
+   /* position: fixed;*/
+    top: 0;
+    z-index: 1000;
+    box-sizing: border-box; /* Ensures padding doesn’t affect width */
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.search-bar {
+    /* display: flex; */
+    align-items: center;
+    gap: 10px;
+}
+
+.search-bar input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 350px;
+    height: 40px;
+}
+
+.search-btn {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; /* Larger font size */
+    font-weight: 600; /* Medium-bold weight */
+}
+
+.search-btn a{
+  text-decoration: none;
+  color: #fff;
+}
+
+.login-btn {
+    background-color: transparent;
+    color: #28a745;
+    border: solid 1px #28a745;
+    border-radius: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px; /* Larger font size */
+    font-weight: 600; /* Medium-bold weight */
+}
+
+.alignnav {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Spacing between elements */
+}
+
+		main {
+			padding: 20px 80px;
+		}
+
+		.content {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.content h1 {
+			flex-grow: 1;
+			font-size: 2.4rem;
+			text-align: center;
+      padding: 20px 0px;
+			
+		}
+
+		.add-btn {
+			border-radius: 10px;
+			background-color: #28a745;
+			color: white;
+			padding: 8px 20px;
+			height: 35px;
+			font-size: 1.1rem;
+			font-weight: 600;
+			border: none;
+			cursor: pointer;
+		}
+
+		.add-btn a {
+			text-decoration: none;
+			color: white;
+		}
+
+		.gallery-container {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 20px;
+			padding: 20px;
+		}
+
+		.gallery-card {
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			overflow: hidden;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+
+		.gallery-card:hover {
+			transform: scale(1.05);
+			box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+		}
+
+		.gallery-card img {
+			width: 100%;
+			height: 200px;
+			object-fit: cover;
+		}
+
+		.gallery-info {
+			padding: 15px;
+			text-align: left;
+		}
+
+		.art-title {
+			font-size: 1.2rem;
+			color: #000;
+			text-decoration: none;
+			font-weight: bold;
+		}
+
+		.art-title:hover {
+			color: #007bff;
+		}
+
+		.artist-name {
+			font-size: 1rem;
+			color: #555;
+			text-decoration: none;
+		}
+
+		.artist-name:hover {
+			text-decoration: underline;
+		}
+
+		.price {
+			font-size: 1.1rem;
+			font-weight: bold;
+			color: #000;
+		}
+		.login-btn a{
+			text-decoration: none;
+			color: #28a745;
+		}
+	</style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+	<header>
+		<div class="navbar">
+			<h1 class="logo">Artelier</h1>
+			<div class="alignnav">
+				<div class="search-bar">
+					<input type="text" placeholder="Search art or artist" />
+					<button class="search-btn"><a href=""><i class="fa-solid fa-magnifying-glass"></i></a></button>
+				</div>
+				<button class="login-btn"><a href="/signup">Sign Up</a></button>
+				<button class="login-btn"><a href="/signin">Log In</a></button>
+				
+			</div>
+		</div>
+	</header>
+
+
+	<main>
+		<div class="content">
+			<h1>Discover Art You Love From the World's <br/> Leading Online Gallery</h1>
+			
+		</div>
+		<div class="gallery-container">
+			<!-- Cards loop -->
+			<div class="gallery-card" th:each="art : ${artworks}">
+				<!-- Artwork Image -->
+				<a th:href="@{/art/details/{id}(id=${art.id})}"><img th:src="@{'/uploads/' + ${art.tempUrl}}" alt="Art Image" /></a>
+
+				<!-- Artwork Details -->
+				<div class="gallery-info">
+					<!-- Artwork Title -->
+					<p class="art-title" th:text="${art.title}">
+						Artwork Title
+					</p>
+
+					<!-- Artwork Type -->
+					<p class="type" th:text="'Type: ' + ${art.type}">
+						Type
+					</p>
+
+					<!-- Price -->
+					<p class="price" th:text="'₹ ' + ${art.price}">
+						Price
+					</p>
+
+					<!-- Artist Name 
+					<p>
+						<a th:href="@{/artist/details/{id}(id=${art.artist.id})}" class="artist-name"
+							th:text="${art.artist.name}">
+							Artist Name
+						</a> -->
+					</p> 
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+
+</html>
